@@ -1,23 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { GET_LAUNCHES } from './querry/launchesPast';
+import { useQuery } from "@apollo/client";
+import Loader from "./components/UI/Loader/Loader";
+import MyCard from "./components/UI/card/MyCard";
+import CreateForm from './components/UI/CreateForm/CreateForm';
 
-function App() {
+const App = () => { 
+
+  const [launches, setLaunches] = useState([]);
+
+  const { 
+    data: dataLaunches,
+    loading: loadingLaunches,
+    error: errorLaunches 
+  } = useQuery(GET_LAUNCHES);
+  
+
+  useEffect(() => {
+    if(!loadingLaunches) {
+      setLaunches(dataLaunches.launchesPast)
+    }
+  },[dataLaunches]) 
+
+  useEffect(() => {
+    if(errorLaunches) {
+      alert(errorLaunches)
+    }
+  },[errorLaunches]) 
+
+  const hadleLogClick = () => {
+    console.log(launches);
+  }
+
+  const addNewMissionClick = (newLaunch) => {
+    setLaunches([...launches, newLaunch])
+  }
+   
+  const removeMission = (launch) => {
+    setLaunches(launches.filter(p => p.id !== launch.id))
+  } 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={hadleLogClick}>
+
+      </button>
+      <CreateForm create={addNewMissionClick}/>
+      {loadingLaunches
+        ? <Loader/>
+        : <div>
+          {launches.map(launch => 
+            <MyCard remove={removeMission} mission = {launch} key={launch.id}>
+            </MyCard>  
+          )}
+        </div>}
     </div>
   );
 }

@@ -1,0 +1,14 @@
+.my__btn{
+    font-size: 14px;
+    color: rgb(255, 94, 0);
+    background: white;
+    border: 3px solid gray;
+    border-radius: 20px;
+    cursor: pointer;
+    height: 40px;
+    width: 160px;
+}
+
+.now_blue {
+    background: blue;
+}
