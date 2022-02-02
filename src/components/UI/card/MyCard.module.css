@@ -18,3 +18,7 @@
     width: 100px;
     height: 100px;
 }
+
+.now__gray{
+    background: gray !important;
+}
